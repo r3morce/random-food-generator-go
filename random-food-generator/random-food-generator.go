@@ -3,10 +3,14 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	// "storage"
 	"time"
 )
 
 func main() {
+
+	CreateFoods()
+	fmt.Printf("\nFoods in db: %v\n\n", GetFoods())
 
 	var minRanking int
 	var maxRanking int
@@ -50,7 +54,7 @@ func main() {
 	}
 
 	// show picked food
-	fmt.Printf("\nYou have to eat %s\n", pickedFood)
+	fmt.Printf("\n\nYou have to eat %s\n", pickedFood)
 
 	// update db
 	for i := 0; i <= len(foods)-1; i++ {
@@ -60,17 +64,4 @@ func main() {
 		}
 	}
 	// fmt.Println(foods)
-}
-
-// Food holds name and current ranking
-type Food struct {
-	name string
-	rank int
-}
-
-// Ranking holds food name and rating range for pick
-type Ranking struct {
-	name string
-	min  int
-	max  int
 }

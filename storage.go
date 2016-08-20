@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"strconv"
@@ -78,4 +79,25 @@ func GetFoods() []Food {
 	}
 
 	return foods
+}
+
+// UpdateFoods increase the ranking of the picked food
+func UpdateFoods(pickedFood string) {
+	db, err := bolt.Open("foods.db", 0644, nil)
+	if err != nil {
+		return
+	}
+
+	db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		bucket := tx.Bucket(foodBucketID)
+		pick := []byte(pickedFood)
+		cursor := bucket.Cursor()
+
+		for key, value := cursor.Seek(pick); bytes.Equal(key, pick); key, value = cursor.Next() {
+			fmt.Printf("key=%s, value=%s\n", key, value)
+		}
+		return nil
+	})
+	return
 }

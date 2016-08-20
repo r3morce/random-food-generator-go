@@ -82,22 +82,39 @@ func GetFoods() []Food {
 }
 
 // UpdateFoods increase the ranking of the picked food
-func UpdateFoods(pickedFood string) {
+func UpdateFoods(pickedFood string, newRanking int) {
+
+	fmt.Printf("Looking for %v\n", pickedFood)
+
 	db, err := bolt.Open("foods.db", 0644, nil)
 	if err != nil {
+		fmt.Printf("Error: %s\n", err)
 		return
 	}
 
-	db.View(func(tx *bolt.Tx) error {
+	fmt.Println("alright")
+
+	db.Update(func(tx *bolt.Tx) error {
 		// Assume bucket exists and has keys
 		bucket := tx.Bucket(foodBucketID)
 		pick := []byte(pickedFood)
 		cursor := bucket.Cursor()
+
+		fmt.Printf("Looking for %v\n", pick)
 
 		for key, value := cursor.Seek(pick); bytes.Equal(key, pick); key, value = cursor.Next() {
 			fmt.Printf("key=%s, value=%s\n", key, value)
 		}
 		return nil
 	})
+
+	db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket(foodBucketID)
+		pick := []byte(pickedFood)
+
+		err := bucket.Put(pick, []byte(string(newRanking)))
+		return err
+	})
+
 	return
 }

@@ -27,13 +27,17 @@ func main() {
 	pick := random.Intn(maxRanking)
 
 	// select food from pick
-	pickedFood := GetFoodFromPick(rankings, pick)
+	pickedFoodName := GetFoodFromPick(rankings, pick)
 
 	// show picked food
-	fmt.Printf("\n\nYou have to eat %s\n", pickedFood)
+	fmt.Printf("\n\nYou have to eat %s\n", pickedFoodName)
+
+	// todo: need to get picked food ranking
+	pickedFoodRanking := GetRankingFromFoods(foods, pickedFoodName)
 
 	// update db
-	UpdateFoods(pickedFood)
+	pickedFoodRanking++
+	UpdateFoods(pickedFoodName, pickedFoodRanking)
 }
 
 // GetRankingFromFoods return rankings, minRanking and maxRanking
@@ -77,4 +81,15 @@ func GetFoodFromPick(rankings []Ranking, pick int) string {
 		}
 	}
 	return ""
+}
+
+// GetRankingFromFoods find and return ranking from food name
+func GetRankingFromFoods(foods []Food, foodName string) int {
+	for i := 0; i <= len(foods)-1; i++ {
+		food := foods[i]
+		if foodName == food.name {
+			return food.rank
+		}
+	}
+	return 0
 }

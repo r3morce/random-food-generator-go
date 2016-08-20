@@ -5,5 +5,4 @@ Basic functionality is working.
 
 Todo: 
 - Store foods with rankings in an actual data base
-- Outsource structs
 - General refactoring

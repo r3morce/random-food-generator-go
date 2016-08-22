@@ -33,7 +33,7 @@ func main() {
 	fmt.Printf("\n\nYou have to eat %s\n", pickedFoodName)
 
 	// todo: need to get picked food ranking
-	pickedFoodRanking := GetRankingFromFoods(foods, pickedFoodName)
+	pickedFoodRanking := GetRankingFromFood(foods, pickedFoodName)
 
 	// update db
 	pickedFoodRanking++
@@ -83,8 +83,8 @@ func GetFoodFromPick(rankings []Ranking, pick int) string {
 	return ""
 }
 
-// GetRankingFromFoods find and return ranking from food name
-func GetRankingFromFoods(foods []Food, foodName string) int {
+// GetRankingFromFood find and return ranking from food name
+func GetRankingFromFood(foods []Food, foodName string) int {
 	for i := 0; i <= len(foods)-1; i++ {
 		food := foods[i]
 		if foodName == food.name {
